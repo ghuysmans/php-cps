@@ -1,0 +1,13 @@
+{
+    "name": "ghuysmans/func",
+    "type": "project",
+    "require": {
+        "opis/closure": "^3.5"
+    },
+    "authors": [
+        {
+            "name": "Guillaume Huysmans",
+            "email": "ghuysmans99@gmail.com"
+        }
+    ]
+}

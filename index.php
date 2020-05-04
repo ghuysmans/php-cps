@@ -3,9 +3,13 @@
 require_once 'vendor/autoload.php';
 use Opis\Closure\SerializableClosure;
 //SerializableClosure::setSecretKey("secret");
-$db = new mysqli('localhost', 'test', 'bonjour', 'test');
-if ($db->connect_errno)
-	die('db error');
+
+function connect() {
+	$db = new mysqli('localhost', 'test', 'bonjour', 'test');
+	if ($db->connect_errno)
+		die('db error');
+	return $db;
+}
 
 if (isset($_REQUEST['k'])) {
 	$k = str_replace("\r", '', $_REQUEST['k']); //added by the browser
@@ -14,13 +18,14 @@ if (isset($_REQUEST['k'])) {
 else {
 	$t = time();
 	$answer = rand(1, 10);
-	$f = function() use ($t, $answer, $db) {
+	$f = function() use ($t, $answer) {
 		//hello there...
 		$d = date(DATE_RFC2822, $t);
 ?>
 <p>On <?=$d?>, you entered <?=$_POST['x']?>.</p>
 <p><?=$_POST['x'] == $answer ? '<b>You won</b>' : 'You lost.'?></p>
 <?php
+		$db = connect();
 		$res = $db->query('SELECT * FROM users');
 		while ($row = $res->fetch_assoc()) {
 			echo "{$row['id']}, created {$row['created']}<br>\n";
